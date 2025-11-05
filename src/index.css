@@ -37,9 +37,9 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+* {
+  box-sizing: border-box;
+}
   body {
     @apply bg-black text-foreground;
     background-color: #000;
