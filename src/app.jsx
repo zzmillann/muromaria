@@ -1,19 +1,38 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from '@/pages/HomePage';
-import Layout from '@/components/Layout';
-import { Toaster } from '@/components/ui/toaster';
+import { createBrowserRouter , RouterProvider } from 'react-router-dom';
+import HomePage from './LayOut/HomePage/homepage';
+import Layout from './LayOut/LayOut';
+import { Toaster } from './components/ui/toaster';
+import Registro from './components/Registro';
+
+
+const enrutador = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />
+      },
+      {
+        path: 'registro',
+        element: <Registro />
+      },
+      {
+        path: '*',
+        element: <p>404 Not Found</p>
+      }
+    ]
+  }
+]);
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-        <Toaster />
-      </Layout>
-    </Router>
+    <>
+      <RouterProvider router={enrutador} />
+      <Toaster />
+    </>
   );
 }
 

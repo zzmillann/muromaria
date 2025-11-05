@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../LayOut/Header/header';
-import Footer from '../LayOut/Footer/footer';
+import Header from './Header/header';
+import Footer from './Footer/footer';
 
 const Layout = () => {
   return (
@@ -13,6 +13,6 @@ const Layout = () => {
       <Footer />
     </div>
   );
-};
 
+}
 export default Layout;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import Hero from '@/components/Hero';
-import NewsFeed from '@/components/NewsFeed';
-import AudioNews from '@/components/AudioNews';
-import Personalize from '@/components/Personalize';
-import Pricing from '@/components/Pricing';
+import Hero from '../../components/hero';
+import NewsFeed from '../../components/NewsFeed';
+import AudioNews from '../../components/audionews';
+import Personalize from '../../components/Personalize';
+import Pricing from '../../components/pricing';
 
 const HomePage = () => {
   return (

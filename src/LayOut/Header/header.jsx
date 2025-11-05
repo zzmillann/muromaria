@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Castle, Rss, LogIn, UserPlus } from 'lucide-react'; // LogIn para iniciar sesión, UserPlus para registrarse
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const handleSubscribe = () => {
@@ -13,9 +14,6 @@ const Header = () => {
     alert("Aquí iría la lógica de iniciar sesión"); // placeholder
   };
 
-  const handleRegister = () => {
-    window.location.href = '/register';
-  };
 
   return (
     <header className="sticky top-0 z-50 py-3 px-4 bg-black/50 backdrop-blur-lg border-b border-red-500/10">
@@ -58,13 +56,16 @@ const Header = () => {
           </Button>
 
           {/* Botón Registrarse */}
+             <Link to="/registro" >
           <Button
-            onClick={handleRegister}
+          
             className="bg-gradient-to-r from-green-600 to-green-800 text-white font-bold hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(34,197,94,0.4)] flex items-center"
           >
             <UserPlus className="mr-2 h-4 w-4" />
             Registrarse
+          
           </Button>
+          </Link>
         </motion.div>
       </div>
     </header>
