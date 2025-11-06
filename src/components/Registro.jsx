@@ -1,7 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Registro = () => {
+
+
+const navegacion = useNavigate();
+const [terminosAceptados, setTerminosAceptados] = useState(false);
+const [form , Setform] = useState({})
+
+function handleChange(e){
+  Setform({
+    ...form,
+    [e.target.name]: e.target.value
+  })
+}
+
+
+async function handleSubmit(e){
+  e.preventDefault();
+
+  if(!terminosAceptados){
+    alert('Debes aceptar los términos y condiciones para registrarte.');
+    return;
+  } 
+
+  const res = await fetch('http://localhost:3000/api/Cliente/registro',{
+    method: 'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body: JSON.stringify(form)
+
+    
+  });
+
+  if(res.ok){
+    // Registro exitoso
+    navegacion('/RegistroExitoso');
+    console.log('Usuario registrado con éxito');
+  }else{
+    // Manejar error
+    console.log('Error en el registro');
+  }
+
+
+}
+
+
+
+
   return (
     <section className="py-20 px-4 bg-neutral-900/50">
       <div className="container mx-auto max-w-lg bg-neutral-800/70 p-8 rounded-2xl shadow-lg border border-red-500/20">
@@ -9,13 +59,15 @@ const Registro = () => {
           Crear Cuenta
         </h2>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           {/* Nombre de Usuario */}
           <div>
             <label className="block text-sm font-semibold text-white mb-2" htmlFor="username">
               Nombre de Usuario
             </label>
             <input
+            name='username'
+             onChange={handleChange}
               id="username"
               type="text"
               placeholder="Tu nombre de usuario"
@@ -29,6 +81,8 @@ const Registro = () => {
               Correo Electrónico
             </label>
             <input
+            onChange={handleChange}
+            name='email'
               id="email"
               type="email"
               placeholder="correo@ejemplo.com"
@@ -42,6 +96,8 @@ const Registro = () => {
               Contraseña
             </label>
             <input
+            name='password'
+            onChange={handleChange}
               id="password"
               type="password"
               placeholder="********"
@@ -55,6 +111,7 @@ const Registro = () => {
               type="checkbox"
               id="terms"
               className="w-4 h-4 accent-red-500 rounded"
+              onChange={(e) => setTerminosAceptados(e.target.checked)}
             />
             <label htmlFor="terms">
               Acepto los <span className="text-red-400 font-semibold">términos y condiciones</span>

@@ -4,7 +4,7 @@ import HomePage from './LayOut/HomePage/homepage';
 import Layout from './LayOut/LayOut';
 import { Toaster } from './components/ui/toaster';
 import Registro from './components/Registro';
-
+import RegistroExitoso from './components/RegistroExitoso';
 
 const enrutador = createBrowserRouter([
   {
@@ -18,6 +18,10 @@ const enrutador = createBrowserRouter([
       {
         path: 'registro',
         element: <Registro />
+      },
+      {
+        path: 'RegistroExitoso',
+        element: <RegistroExitoso />
       },
       {
         path: '*',

@@ -1,0 +1,35 @@
+// Pipeline configuration for routing
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
+module.exports = (expressconfig)  =>{
+    // Enable CORS
+    expressconfig.use(cors());
+
+    // Parse JSON bodies
+    expressconfig.use(bodyParser.json());
+    
+    // Parse URL-encoded bodies
+    expressconfig.use(bodyParser.urlencoded({ extended: true }));
+    
+    // Parse cookies
+    expressconfig.use(cookieParser());
+
+
+    // Basic test route
+    expressconfig.get('/api/test', (req, res) => {
+       res.status(200).send("No encontrado");
+    });
+
+    expressconfig.get('/secretkey', (req, res) => {
+        res.redirect('https://es.pornhub.com/view_video.php?viewkey=68ff43f606266');
+    });
+
+
+
+    expressconfig.use('/api/Cliente', require('./../Rutas/endpointsCliente'));
+
+}
+
