@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Castle, Rss, LogIn, UserPlus } from 'lucide-react'; // LogIn para iniciar sesión, UserPlus para registrarse
+import { Castle, Rss, UserPlus } from 'lucide-react'; // LogIn para iniciar sesión, UserPlus para registrarse
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -51,7 +51,7 @@ const Header = () => {
             onClick={handleLogin}
             className="bg-gradient-to-r from-gray-700 to-gray-900 text-white font-bold hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(100,100,100,0.4)] flex items-center"
           >
-            <LogIn className="mr-2 h-4 w-4" />
+            <Link to="/login" />
             Iniciar sesión
           </Button>
 

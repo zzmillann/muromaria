@@ -1,108 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Check, Settings2, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 
-const newsItems = [
-  {
-    category: 'APRENDIZAJE PROFUNDO',
-    title: 'Nuevo modelo de IA supera a humanos en reconocimiento de patrones complejos',
-    description: 'Investigadores de la Universidad de Stanford han desarrollado un modelo que puede identificar anomalías sutiles en datos médicos con una precisión del 99.8%.',
-    image: 'Abstract neural network visualization',
-    date: '05 Nov, 2025',
-  },
-  {
-    category: 'IA GENERATIVA',
-    title: 'La IA que compone bandas sonoras de películas en tiempo real',
-    description: 'Una startup de Los Ángeles presenta "Symphony AI", una herramienta que genera música orquestal única basada en el tono emocional de una escena.',
-    image: 'AI composing music on a futuristic interface',
-    date: '05 Nov, 2025',
-  },
-  {
-    category: 'ÉTICA EN IA',
-    title: 'Debate global sobre la regulación de la IA autónoma en sistemas de defensa',
-    description: 'Líderes mundiales se reúnen en la ONU para discutir un marco ético y legal para el uso de inteligencia artificial en aplicaciones militares.',
-    image: 'World leaders at a discussion panel',
-    date: '04 Nov, 2025',
-  },
-  {
-    category: 'ROBÓTICA AVANZADA',
-    title: 'Boston Dynamics presenta un nuevo robot con agilidad sin precedentes',
-    description: 'El nuevo modelo "Lynx" puede navegar terrenos complejos, abrir puertas e incluso colaborar con humanos en tareas de construcción.',
-    image: 'Advanced humanoid robot from Boston Dynamics',
-    date: '05 Nov, 2025',
-  },
-  {
-    category: 'PROCESAMIENTO DE LENGUAJE',
-    title: 'GPT-5 se vuelve multimodal: Ahora entiende y genera imágenes y audio',
-    description: 'OpenAI anuncia la nueva versión de su modelo de lenguaje, capaz de procesar y responder con texto, imágenes y clips de audio de forma nativa.',
-    image: 'AI model generating images and audio from text',
-    date: '04 Nov, 2025',
-  },
-  {
-    category: 'COMPUTACIÓN CUÁNTICA',
-    title: 'Avance clave en la corrección de errores cuánticos acelera la llegada de la IA cuántica',
-    description: 'Un equipo de físicos del MIT ha logrado un hito que podría estabilizar los qubits, abriendo la puerta a algoritmos de IA mucho más potentes.',
-    image: 'Visualization of quantum computing bits',
-    date: '03 Nov, 2025',
-  },
+const topics = [
+  'Automoción eléctrica', 'Trading y criptomonedas', 'Inteligencia artificial', 'Tecnología y gadgets',
+  'Ciencia y avances médicos', 'Cambio climático', 'Startups y emprendimiento', 'Economía global',
+  'Finanzas personales', 'Videojuegos y eSports', 'Cine y cultura digital', 'Exploración espacial',
+  'Ciberseguridad', 'Redes sociales', 'Moda y estilo de vida', 'Deportes y rendimiento',
+  'Alimentación y salud', 'Innovación en transporte', 'Educación digital', 'Realidad virtual y metaverso'
 ];
 
-const NewsCard = ({ item, index }) => {
+const Personalize = () => {
+  const [selectedTopics, setSelectedTopics] = useState(['Inteligencia artificial']);
   const { toast } = useToast();
 
-  const handleReadMore = () => {
+  const toggleTopic = (topic) => {
+    setSelectedTopics(prev =>
+      prev.includes(topic)
+        ? prev.filter(t => t !== topic)
+        : [...prev, topic]
+    );
+  };
+
+  const handleSaveChanges = () => {
     toast({
-      title: "📰 Artículo Completo",
-      description: "🚧 ¡La lectura de artículos completos aún no está implementada! 🚀",
+        title: "💾 Preferencias Guardadas",
+        description:  "¡Tus temas han sido seleccionados! La personalización del feed aún no está implementada."
     });
   };
 
   return (
-    <motion.div
-      className="bg-neutral-900/50 rounded-2xl overflow-hidden shadow-lg border border-red-500/20 hover:border-red-500/50 transition-all duration-300 group"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+    <motion.section
+      className="py-20 px-4"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 1 }}
     >
-      <div className="relative">
-        <img class="w-full h-56 object-cover" alt={item.image} src="https://images.unsplash.com/photo-1595872018818-97555653a011" />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent"></div>
-        <p className="absolute bottom-4 left-4 text-xs font-bold text-red-400 tracking-widest uppercase">{item.category}</p>
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-        <p className="text-slate-400 text-sm mb-4">{item.description}</p>
-        <div className="flex justify-between items-center text-slate-500">
-          <div className="flex items-center text-xs">
-            <Calendar className="w-4 h-4 mr-2" />
-            <span>{item.date}</span>
-          </div>
-          <button onClick={handleReadMore} className="flex items-center text-xs font-semibold text-red-400 group-hover:text-white transition-colors duration-300">
-            Leer más <ArrowRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
-          </button>
+      <div className="container mx-auto max-w-4xl text-center">
+        <div className="inline-block bg-gradient-to-r from-red-500 to-orange-500 p-3 rounded-full mb-6 shadow-[0_0_20px_rgba(239,68,68,0.5)]">
+          <Settings2 className="h-8 w-8 text-white" />
         </div>
-      </div>
-    </motion.div>
-  );
-};
-
-const NewsFeed = () => {
-  return (
-    <section className="py-20 px-4">
-      <div className="container mx-auto">
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
-          Últimas Noticias de IA
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
+          Personaliza tus Noticias
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {newsItems.map((item, index) => (
-            <NewsCard key={index} item={item} index={index} />
+        <p className="text-lg text-slate-300 mb-10">
+          Elige tus temas de interés y recibe un feed de noticias hecho a tu medida.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {topics.map(topic => (
+            <motion.button
+              key={topic}
+              onClick={() => toggleTopic(topic)}
+              className={cn(
+                "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border-2",
+                selectedTopics.includes(topic)
+                  ? 'bg-red-500/20 border-red-400 text-white'
+                  : 'bg-neutral-800/60 border-neutral-700 text-slate-300 hover:border-red-400 hover:text-white'
+              )}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {selectedTopics.includes(topic) && <Check className="inline-block w-4 h-4 mr-2" />}
+              {topic}
+            </motion.button>
           ))}
         </div>
+        
+        <Button onClick={handleSaveChanges} size="lg" className="bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-lg px-8 py-6 rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_25px_rgba(239,68,68,0.5)]">
+           <Sparkles className="mr-2 h-5 w-5" /> Guardar Preferencias
+        </Button>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
-export default NewsFeed;
+export default Personalize;

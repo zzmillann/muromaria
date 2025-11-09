@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet';
 import Hero from '../../components/hero';
 import NewsFeed from '../../components/NewsFeed';
 import AudioNews from '../../components/audionews';
-import Personalize from '../../components/Personalize';
 import Pricing from '../../components/pricing';
-
+import Personalize from '../../components/Personalize';
+import InicioSesion from '../../components/InicioSesion';
 const HomePage = () => {
   return (
     <>
@@ -18,6 +18,7 @@ const HomePage = () => {
       </Helmet>
       <Hero />
       <NewsFeed />
+      <InicioSesion />
       <AudioNews />
       <Personalize />
       <Pricing />

@@ -6,8 +6,10 @@ const cookieParser = require('cookie-parser');
 
 module.exports = (expressconfig)  =>{
     // Enable CORS
-    expressconfig.use(cors());
-
+expressconfig.use(cors({
+    origin: 'http://localhost:5173', // URL de tu frontend
+    credentials: true // Permite enviar cookies
+}));
     // Parse JSON bodies
     expressconfig.use(bodyParser.json());
     
