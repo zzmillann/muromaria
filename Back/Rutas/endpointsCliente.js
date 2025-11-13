@@ -17,7 +17,7 @@ router.post('/registro', async (req, res) => {
 
         // Verificar si el usuario ya existe
 
-        const conexionmongo = await mongoose.connect(process.env.URL_MONGO);
+        const conexionmongo = await mongoose.connect(process.env.MONGODB_URI);
 
         const existeusuario = await mongoose.connection.db.collection('usuarios').findOne({ $or: [ { username }, { email } ] });
 
@@ -40,8 +40,10 @@ router.post('/registro', async (req, res) => {
 
 
     }catch(error){
-        console.error('Error en el registro:', error);
-        return res.status(500).json({ message: 'Error del servidor' });
+      console.error('Error en el registro:', error.stack || error);
+    return res.status(500).json({ 
+        message: 'Error del servidor', 
+        error: error.message })
 
 
 
@@ -66,7 +68,7 @@ router.post('/login', async (req, res) => {
 
        try {
     
-        const conexionmongo = await mongoose.connect(process.env.URL_MONGO);
+        const conexionmongo = await mongoose.connect(process.env.MONGODB_URI);
 
 if (!conexionmongo) {
     console.error('Error al conectar a la base de datos desde el backend');

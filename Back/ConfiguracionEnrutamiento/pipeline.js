@@ -25,10 +25,7 @@ expressconfig.use(cors({
        res.status(200).send("No encontrado");
     });
 
-    expressconfig.get('/secretkey', (req, res) => {
-        res.redirect('https://es.pornhub.com/view_video.php?viewkey=68ff43f606266');
-    });
-
+  
 
 
     expressconfig.use('/api/Cliente', require('./../Rutas/endpointsCliente'));

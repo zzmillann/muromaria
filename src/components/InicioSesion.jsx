@@ -21,7 +21,7 @@ function handlechange(e){
 async function handleSubmit(e){
   e.preventDefault();
 
-  const res = await fetch('http://localhost:3000/api/Cliente/login',{
+  const res = await fetch('http://31.97.69.178:3000/api/Cliente/login',{
     method: 'POST',
     headers:{
       'Content-Type':'application/json'

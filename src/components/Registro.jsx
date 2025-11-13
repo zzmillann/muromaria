@@ -27,7 +27,7 @@ async function handleSubmit(e){
     return;
   } 
 
-  const res = await fetch('http://localhost:3000/api/Cliente/registro',{
+  const res = await fetch('http://31.97.69.178:3000/api/Cliente/registro',{
     method: 'POST',
     headers:{
       'Content-Type':'application/json'
