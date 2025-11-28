@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './LayOut/HomePage/homepage';
-import Layout from './LayOut/LayOut';
+import Layout from './LayOut/layout.jsx';
 import { Toaster } from './components/ui/toaster';
 import Registro from './components/Registro';
 import RegistroExitoso from './components/RegistroExitoso';
