@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router-dom';
 
 const InicioSesion = () => {
 const navegacion = useNavigate();
- const [login , setlogin] = React.useState({})
-
+const [login, setlogin] = React.useState({
+  username: "",
+  password: ""
+});
 
 function handlechange(e){
   setlogin({
@@ -23,9 +25,12 @@ async function handleSubmit(e){
 
   const res = await fetch('https://muromaria.com/api/Cliente/login',{
     method: 'POST',
+
     headers:{
       'Content-Type':'application/json'
+      
     },
+    credentials:"include",
     body: JSON.stringify(login)
     });
 
@@ -61,6 +66,7 @@ async function handleSubmit(e){
             name='username'
           id="usuario"
           type="text"
+          value={login.username || ""}
           placeholder="usuario o correo@ejemplo.com"
           className="w-full px-4 py-2 rounded-lg bg-neutral-900/70 border border-red-500/20 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
         />
@@ -76,7 +82,8 @@ async function handleSubmit(e){
         </label>
         <input
          onChange={handlechange}
-            name='password'
+          name='password'
+          value={login.password || ""}
           id="password"
           type="password"
           placeholder="********"

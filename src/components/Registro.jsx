@@ -2,62 +2,57 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const Registro = () => {
+  const navegacion = useNavigate();
+  const [terminosAceptados, setTerminosAceptados] = useState(false);
+  const [form, Setform] = useState({});
+  const [modalMessage, setModalMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
-
-const navegacion = useNavigate();
-const [terminosAceptados, setTerminosAceptados] = useState(false);
-const [form , Setform] = useState({})
-
-function handleChange(e){
-  Setform({
-    ...form,
-    [e.target.name]: e.target.value
-  })
-}
-
-
-async function handleSubmit(e){
-  e.preventDefault();
-
-  if(!terminosAceptados){
-    alert('Debes aceptar los términos y condiciones para registrarte.');
-    return;
-  } 
-
-  const res = await fetch('https://muromaria.com/api/Cliente/registro',{
-    method: 'POST',
-    headers:{
-      'Content-Type':'application/json'
-    },
-    body: JSON.stringify(form)
-
-    
-  });
-
-  if(res.ok){
-    // Registro exitoso
-    navegacion('/RegistroExitoso');
-    console.log('Usuario registrado con éxito');
-  }else{
-    // Manejar error
-    console.log('Error en el registro');
+  function handleChange(e) {
+    Setform({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-}
+    if (!terminosAceptados) {
+      setModalMessage('Debes aceptar los términos y condiciones para registrarte.');
+      setShowModal(true);
+      return;
+    }
 
+    try {
+      const res = await fetch('https://muromaria.com/api/Cliente/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
 
-
+      if (res.ok) {
+        navegacion('/RegistroExitoso');
+        console.log('Usuario registrado con éxito');
+      } else if (res.status === 409) {
+        const data = await res.json();
+        setModalMessage(data.message || 'El usuario o correo ya están en uso.');
+        setShowModal(true);
+      } else {
+        setModalMessage('Error en el registro. Inténtalo de nuevo.');
+        setShowModal(true);
+      }
+    } catch (err) {
+      setModalMessage('Error de conexión con el servidor.');
+      setShowModal(true);
+    }
+  }
 
   return (
     <section className="py-20 px-4 bg-neutral-900/50">
       <div className="container mx-auto max-w-lg bg-neutral-800/70 p-8 rounded-2xl shadow-lg border border-red-500/20">
-        <h2 className="text-3xl font-bold mb-6 text-white text-center">
-          Crear Cuenta
-        </h2>
+        <h2 className="text-3xl font-bold mb-6 text-white text-center">Crear Cuenta</h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           {/* Nombre de Usuario */}
@@ -66,8 +61,8 @@ async function handleSubmit(e){
               Nombre de Usuario
             </label>
             <input
-            name='username'
-             onChange={handleChange}
+              name="username"
+              onChange={handleChange}
               id="username"
               type="text"
               placeholder="Tu nombre de usuario"
@@ -81,8 +76,8 @@ async function handleSubmit(e){
               Correo Electrónico
             </label>
             <input
-            onChange={handleChange}
-            name='email'
+              onChange={handleChange}
+              name="email"
               id="email"
               type="email"
               placeholder="correo@ejemplo.com"
@@ -96,8 +91,8 @@ async function handleSubmit(e){
               Contraseña
             </label>
             <input
-            name='password'
-            onChange={handleChange}
+              name="password"
+              onChange={handleChange}
               id="password"
               type="password"
               placeholder="********"
@@ -118,15 +113,10 @@ async function handleSubmit(e){
             </label>
           </div>
 
+          {/* Checkbox Newsletter */}
           <div className="flex items-center space-x-2 text-white text-sm">
-            <input
-              type="checkbox"
-              id="newsletter"
-              className="w-4 h-4 accent-red-500 rounded"
-            />
-            <label htmlFor="newsletter">
-              Suscribirme al boletín de noticias
-            </label>
+            <input type="checkbox" id="newsletter" className="w-4 h-4 accent-red-500 rounded" />
+            <label htmlFor="newsletter">Suscribirme al boletín de noticias</label>
           </div>
 
           {/* Botón */}
@@ -138,6 +128,21 @@ async function handleSubmit(e){
           </Button>
         </form>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-neutral-900 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl border border-red-500/20 animate-fadeIn">
+            <p className="text-red-400 font-bold text-lg mb-4">{modalMessage}</p>
+            <Button
+              onClick={() => setShowModal(false)}
+              className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition"
+            >
+              Cerrar
+            </Button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

@@ -10,7 +10,7 @@ const Header = () => {
   };
 
   const handleLogin = () => {
-    alert("Aquí iría la lógica de iniciar sesión"); // placeholder
+     window.location.href = '/login'; // placeholder
   };
 
   const handleRegister = () => {

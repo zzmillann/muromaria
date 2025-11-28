@@ -60,26 +60,26 @@ const NewsCard = ({ item, index }) => {
 
   return (
     <motion.div
-      className="bg-neutral-900/50 rounded-2xl overflow-hidden shadow-lg border border-red-500/20 hover:border-red-500/50 transition-all duration-300 group"
+      className="bg-card rounded-2xl overflow-hidden shadow-lg border border-border hover:border-primary/50 transition-all duration-300 group"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
     >
       <div className="relative">
-        <img class="w-full h-56 object-cover" alt={item.image} src="https://images.unsplash.com/photo-1595872018818-97555653a011" />
+        <img className="w-full h-56 object-cover" alt={item.image} src="https://images.unsplash.com/photo-1595872018818-97555653a011" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent"></div>
         <p className="absolute bottom-4 left-4 text-xs font-bold text-red-400 tracking-widest uppercase">{item.category}</p>
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-        <p className="text-slate-400 text-sm mb-4">{item.description}</p>
-        <div className="flex justify-between items-center text-slate-500">
+        <h3 className="text-xl font-bold mb-2 text-foreground">{item.title}</h3>
+        <p className="text-muted-foreground text-sm mb-4">{item.description}</p>
+        <div className="flex justify-between items-center text-muted-foreground">
           <div className="flex items-center text-xs">
             <Calendar className="w-4 h-4 mr-2" />
             <span>{item.date}</span>
           </div>
-          <button onClick={handleReadMore} className="flex items-center text-xs font-semibold text-red-400 group-hover:text-white transition-colors duration-300">
+          <button onClick={handleReadMore} className="flex items-center text-xs font-semibold text-red-400 group-hover:text-primary transition-colors duration-300">
             Leer más <ArrowRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -92,7 +92,7 @@ const NewsFeed = () => {
   return (
     <section className="py-20 px-4">
       <div className="container mx-auto">
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
+        <h2 className="text-center text-4xl md:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground">
           Últimas Noticias de IA
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

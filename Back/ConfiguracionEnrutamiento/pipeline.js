@@ -6,9 +6,13 @@ const cookieParser = require('cookie-parser');
 
 module.exports = (expressconfig)  =>{
     // Enable CORS
-expressconfig.use(cors({
-    origin: 'http://localhost:5173', // URL de tu frontend
-    credentials: true // Permite enviar cookies
+    expressconfig.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5179",
+    "https://muromaria.com"
+  ],
+  credentials: true
 }));
     // Parse JSON bodies
     expressconfig.use(bodyParser.json());

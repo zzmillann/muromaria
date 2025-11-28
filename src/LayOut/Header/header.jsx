@@ -1,73 +1,179 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Castle, Rss, UserPlus } from 'lucide-react'; // LogIn para iniciar sesión, UserPlus para registrarse
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Castle, Sun, Moon, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-  const handleSubscribe = () => {
-    const el = document.getElementById('pricing');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Initialize dark mode
+    const root = window.document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
   };
 
-  const handleLogin = () => {
-    alert("Aquí iría la lógica de iniciar sesión"); // placeholder
-  };
-
+  const menuItems = [
+    { name: 'Suscribirse', path: '#pricing', action: () => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }) },
+    { name: 'Iniciar sesión', path: '/login' },
+    { name: 'Registrarse', path: '/registro' },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 py-3 px-4 bg-black/50 backdrop-blur-lg border-b border-red-500/10">
+    <header className="sticky top-0 z-50 py-4 px-6 bg-background/80 backdrop-blur-md border-b border-border/40 transition-colors duration-300">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          <Castle className="h-8 w-8 text-red-500" />
-          <p className="font-bold text-xl tracking-tighter text-white">MuroMar.IA</p>
-        </motion.div>
-
-        {/* Botones */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-3"
-        >
-          {/* Botón Suscribirse */}
-          <Button
-            onClick={handleSubscribe}
-            className="bg-gradient-to-r from-red-600 to-red-800 text-white font-bold hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center"
+        <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-2 cursor-pointer group"
           >
-            <Rss className="mr-2 h-4 w-4" />
-            Suscribirse
-          </Button>
+            <Castle className="h-8 w-8 text-primary group-hover:text-red-500 transition-colors duration-300" />
+            <p className="font-bold text-xl tracking-tighter text-foreground group-hover:text-red-500 transition-colors duration-300">
+              MuroMar.IA
+            </p>
+          </motion.div>
+        </Link>
 
-          {/* Botón Iniciar sesión */}
-          <Button
-            onClick={handleLogin}
-            className="bg-gradient-to-r from-gray-700 to-gray-900 text-white font-bold hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(100,100,100,0.4)] flex items-center"
-          >
-            <Link to="/login" />
-            Iniciar sesión
-          </Button>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8">
+          <nav className="flex items-center gap-2">
+            {menuItems.map((item) => (
+              <div
+                key={item.name}
+                className="relative px-4 py-2 cursor-pointer"
+                onMouseEnter={() => setHoveredItem(item.name)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                {hoveredItem === item.name && (
+                  <motion.div
+                    layoutId="hoverBackground"
+                    className="absolute inset-0 bg-primary/10 rounded-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
 
-          {/* Botón Registrarse */}
-             <Link to="/registro" >
-          <Button
-          
-            className="bg-gradient-to-r from-green-600 to-green-800 text-white font-bold hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(34,197,94,0.4)] flex items-center"
+                {item.action ? (
+                  <span
+                    onClick={item.action}
+                    className={`relative z-10 text-sm font-medium transition-colors duration-200 ${hoveredItem === item.name ? 'text-primary' : 'text-muted-foreground'
+                      }`}
+                  >
+                    {item.name}
+                  </span>
+                ) : (
+                  <Link to={item.path}>
+                    <span className={`relative z-10 text-sm font-medium transition-colors duration-200 ${hoveredItem === item.name ? 'text-primary' : 'text-muted-foreground'
+                      }`}>
+                      {item.name}
+                    </span>
+                  </Link>
+                )}
+              </div>
+            ))}
+          </nav>
+
+          {/* Theme Toggle */}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
           >
-            <UserPlus className="mr-2 h-4 w-4" />
-            Registrarse
-          
-          </Button>
-          </Link>
-        </motion.div>
+            <AnimatePresence mode="wait">
+              {isDarkMode ? (
+                <motion.div
+                  key="moon"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Moon className="h-5 w-5" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="sun"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Sun className="h-5 w-5" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <div className="flex items-center gap-4 md:hidden">
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+          >
+            {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+          </motion.button>
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-foreground"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden overflow-hidden bg-background border-t border-border/40"
+          >
+            <nav className="flex flex-col p-4 gap-4">
+              {menuItems.map((item) => (
+                <div key={item.name}>
+                  {item.action ? (
+                    <span
+                      onClick={() => {
+                        item.action();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="block text-lg font-medium text-foreground py-2"
+                    >
+                      {item.name}
+                    </span>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block text-lg font-medium text-foreground py-2"
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

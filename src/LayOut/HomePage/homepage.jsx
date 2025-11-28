@@ -1,11 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import Hero from '../../components/hero';
+import NewsCarousel from '../../components/NewsCarousel';
 import NewsFeed from '../../components/NewsFeed';
 import AudioNews from '../../components/audionews';
 import Pricing from '../../components/pricing';
 import Personalize from '../../components/Personalize';
-import InicioSesion from '../../components/InicioSesion';
+
 const HomePage = () => {
   return (
     <>
@@ -17,8 +18,10 @@ const HomePage = () => {
         />
       </Helmet>
       <Hero />
+      <div className="container mx-auto px-4 py-8">
+        <NewsCarousel />
+      </div>
       <NewsFeed />
-      <InicioSesion />
       <AudioNews />
       <Personalize />
       <Pricing />
